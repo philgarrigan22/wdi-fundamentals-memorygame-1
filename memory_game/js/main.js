@@ -36,15 +36,36 @@ var checkForMatch = function() {
       alert("Try again!");
     }
   }
-}
+};
+
+var flipCard = function(e) {
+  console.log(e.getAttribute("data-id"));
+  console.log(this);
+  if (e.getAttribute("src") === "images/back.png") {
+    e.setAttribute("src", cards[e.getAttribute("data-id")].cardImage);
+  } else {
+    e.setAttribute("src", "images/back.png");
+  }
+};
 
 
-var flipCard = function(cardId) {
-  checkForMatch();
-  console.log("User flipped " + cards[cardId].rank + " of " + cards[cardId].suit)
 
-}
+var createBoard = function() {
+  for (var i = 0; i < cards.length; i++) {
+    var cardElement = document.createElement("img");
+    cardElement.setAttribute("src", "images/back.png");
+    cardElement.setAttribute("data-id", i);
+    cardElement.addEventListener('click', () => flipCard(cardElement));
+    document.getElementById("game-board").appendChild(cardElement);
+  }
+};
 
-flipCard(0);
 
-flipCard(2);
+
+
+
+
+
+
+
+createBoard();
