@@ -27,13 +27,40 @@ var cards = [{
 
 cardsInPlay = [];
 
-var flipCard = (cardId) => {
-  cardsInPlay.push(cardId);
+var checkForMatch = () => {
+
   if (cardsInPlay[0] === cardsInPlay[1]) {
     alert("match founds");
   }
-  console.log("user flipped " + cardId);
+
+  if (cardsInPlay.length >=  2) {
+    cardsInPlay = [];
+  }
 };
 
-flipCard(cards[0]);
-flipCard(cards[0]);
+var flipCard = (e) => {
+  cardsInPlay.push(e);
+
+
+
+  checkForMatch();
+};
+
+var createBoard = () => {
+  for (var i = 0; i < cards.length; i++){
+    cardElement = document.createElement("img");
+    cardElement.setAttribute("src", "images/back.png");
+    cardElement.setAttribute("data-id", i);
+    cardElement.addEventListener("click", flipCard.bind(this, cardElement));
+    document.getElementById("game-board").appendChild(cardElement);
+    console.log(cardElement);
+  }
+};
+
+
+
+
+createBoard();
+//
+// flipCard(cards[0]);
+// flipCard(cards[0]);
