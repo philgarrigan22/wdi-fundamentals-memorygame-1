@@ -40,8 +40,8 @@ var checkForMatch = () => {
   console.log(cardsInPlay);
 
   if (cardsInPlay.length < 2) {
-    console.log("null");
-    return null;
+    console.log("false");
+    return false;
   }
 
   // if cards have the same key but are not the same card, return true
@@ -56,15 +56,6 @@ var checkForMatch = () => {
       return false;
     }
   }
-
-
-
-  // // clears card array if its 2 or more
-  // if (cardsInPlay.length > 1) {
-  //   clearCards();
-  //   return false;
-  // }
-  //
 
 };
 
@@ -95,16 +86,19 @@ var flipCard = (e) => {
     gameText(card, false);
   }
 
-  // if (!checkForMatch()) {
-  //   gameText(card, false);
-  // }
-
 };
 
 var clearCards = () => {
   // clears the cardsInPlay array
 
   cardsInPlay = [];
+}
+
+var clearText = () => {
+  var parent = document.getElementById("game-text");
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
 }
 
 var flipAll = () => {
@@ -115,14 +109,17 @@ var flipAll = () => {
     children[i].setAttribute("src", "images/back.png")
   }
   clearCards();
+  clearText();
   console.log(cardsInPlay);
 }
 
-var gameText = (e, bool, arraySize = cardsInPlay.length) => {
+var gameText = (e, bool) => {
   // outputs text about matches
-  // if (arraySize == 2) {
+
+    clearText();
     var gameTextElement = document.createElement("h2");
     var t;
+
     if (bool) {
       t = document.createTextNode("Match found: " + e.rank + " of " + e.suit);
     } else if (!bool) {
