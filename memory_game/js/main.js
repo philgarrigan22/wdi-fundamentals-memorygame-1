@@ -39,7 +39,7 @@ var checkForMatch = () => {
   console.log(cardsInPlay);
 
   if (cardsInPlay.length == 2) {
-    if (cardsInPlay[0].key != cardsInPlay[1].key) {
+    if (cardsInPlay[0].key == cardsInPlay[1].key && cardsInPlay[0].card != cardsInPlay[1].card) {
       if (cardsInPlay[0].id == cardsInPlay[1].id) {
         alert("Match");
         return true;
@@ -58,10 +58,12 @@ var checkForMatch = () => {
 };
 
 var flipCard = (e) => {
-  var id = e.getAttribute("data-id");
+  var data_id = e.getAttribute("data-id");
+  var data_card = e.getAttribute("data-card");
   var card = {
-    id: cards[id].cardImage,
-    key: id
+    id: cards[data_id].cardImage,
+    key: data_id,
+    card: data_card
   };
 
   cardsInPlay.push(card);
@@ -80,10 +82,14 @@ var flipCard = (e) => {
 };
 
 var clearCards = () => {
+  // clears the cardsInPlay array
+
   cardsInPlay = [];
 }
 
 var flipAll = () => {
+  // Flips all cards to img back
+
   var children = document.getElementById("game-board").childNodes;
   for (var i = 0; i < children.length; i++) {
     children[i].setAttribute("src", "images/back.png")
@@ -93,23 +99,26 @@ var flipAll = () => {
 }
 
 var createBoard = () => {
+  // Creates the game board by adding cards as children to reset button id
 
   for (var i = 0; i < cards.length; i++) {
     var cardElement = document.createElement("img");
     cardElement.setAttribute("src", "images/back.png");
     cardElement.setAttribute("data-id", i);
+    cardElement.setAttribute("data-card", i);
     cardElement.addEventListener("click", flipCard.bind(this, cardElement));
     document.getElementById("game-board").appendChild(cardElement);
-    console.log(cardElement);
+    // console.log(cardElement);
   }
 
   for (var i = 4; i < cards.length + 4; i++) {
     var cardElement = document.createElement("img");
     cardElement.setAttribute("src", "images/back.png");
     cardElement.setAttribute("data-id", i - 4);
+    cardElement.setAttribute("data-card", i);
     cardElement.addEventListener("click", flipCard.bind(this, cardElement));
     document.getElementById("game-board").appendChild(cardElement);
-    console.log(cardElement);
+    // console.log(cardElement);
   }
 
   document.getElementById("reset-button").addEventListener("click", flipAll);
