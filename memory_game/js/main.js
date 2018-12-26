@@ -39,25 +39,32 @@ var checkForMatch = () => {
 
   console.log(cardsInPlay);
 
+  if (cardsInPlay.length < 2) {
+    console.log("null");
+    return null;
+  }
+
   // if cards have the same key but are not the same card, return true
   if (cardsInPlay.length == 2) {
     if (cardsInPlay[0].key == cardsInPlay[1].key && cardsInPlay[0].card != cardsInPlay[1].card) {
-      if (cardsInPlay[0].id == cardsInPlay[1].id) {
-        clearCards();
-        return true;
-      } else {
-        clearCards();
-        return false;
-      }
+      clearCards();
+      console.log("true");
+      return true;
+    } else {
+      clearCards();
+      console.log("false");
+      return false;
     }
   }
 
-  // clears card array if its 2 or more
-  if (cardsInPlay.length > 1) {
-    clearCards();
-    return false;
-  }
 
+
+  // // clears card array if its 2 or more
+  // if (cardsInPlay.length > 1) {
+  //   clearCards();
+  //   return false;
+  // }
+  //
 
 };
 
@@ -84,7 +91,13 @@ var flipCard = (e) => {
 
   if (checkForMatch()) {
     gameText(card, true);
+  } else {
+    gameText(card, false);
   }
+
+  // if (!checkForMatch()) {
+  //   gameText(card, false);
+  // }
 
 };
 
@@ -105,18 +118,20 @@ var flipAll = () => {
   console.log(cardsInPlay);
 }
 
-var gameText = (e, bool) => {
+var gameText = (e, bool, arraySize = cardsInPlay.length) => {
   // outputs text about matches
-  var gameTextElement = document.createElement("h2");
-  var t;
-  if (bool) {
-    t = document.createTextNode("Match found: " + e.rank + " of " + e.suit);
-  } else {
-    t = document.createTextNode("Match not found");
+  // if (arraySize == 2) {
+    var gameTextElement = document.createElement("h2");
+    var t;
+    if (bool) {
+      t = document.createTextNode("Match found: " + e.rank + " of " + e.suit);
+    } else if (!bool) {
+      t = document.createTextNode("Match not found");
+    }
+    gameTextElement.appendChild(t);
+    document.getElementById("game-text").appendChild(gameTextElement);
   }
-  gameTextElement.appendChild(t);
-  document.getElementById("game-text").appendChild(gameTextElement);
-}
+// }
 
 var createBoard = () => {
   // Creates the game board by adding cards as children to reset button id
