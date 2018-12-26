@@ -21,6 +21,10 @@ h1 {
   margin: 0;
 }
 
+h2 {
+  font-family:  "Raleway", sans-serif;
+}
+
 p {
   font-family: "Droid Serif", serif;
   margin-left: 25px;

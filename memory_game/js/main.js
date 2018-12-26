@@ -3,29 +3,29 @@ console.log("Up and running!");
 
 var cardsInPlay = [];
 var cards = [{
-    rank: "queen",
-    suit: "hearts",
+    rank: "Queen",
+    suit: "Hearts",
     cardImage: "images/queen-of-hearts.png",
     id: 0
   },
 
   {
-    rank: "queen",
-    suit: "diamonds",
+    rank: "Queen",
+    suit: "Diamonds",
     cardImage: "images/queen-of-diamonds.png",
     id: 1
   },
 
   {
-    rank: "king",
-    suit: "hearts",
+    rank: "King",
+    suit: "Hearts",
     cardImage: "images/king-of-hearts.png",
     id: 2
   },
 
   {
-    rank: "king",
-    suit: "diamonds",
+    rank: "King",
+    suit: "Diamonds",
     cardImage: "images/king-of-diamonds.png",
     id: 3
   }
@@ -83,8 +83,8 @@ var flipCard = (e) => {
   }
 
   if (checkForMatch()) {
-    alert("Match found: " + card.rank + " of " + card.suit);
-  };
+    gameText(card, true);
+  }
 
 };
 
@@ -103,6 +103,19 @@ var flipAll = () => {
   }
   clearCards();
   console.log(cardsInPlay);
+}
+
+var gameText = (e, bool) => {
+  // outputs text about matches
+  var gameTextElement = document.createElement("h2");
+  var t;
+  if (bool) {
+    t = document.createTextNode("Match found: " + e.rank + " of " + e.suit);
+  } else {
+    t = document.createTextNode("Match not found");
+  }
+  gameTextElement.appendChild(t);
+  document.getElementById("game-text").appendChild(gameTextElement);
 }
 
 var createBoard = () => {
