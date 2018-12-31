@@ -7,28 +7,28 @@ var matched = [];
 var cards = [{
     rank: "Queen",
     suit: "Hearts",
-    cardImage: "images/queen-of-hearts.png",
+    cardImage: "memory_game/images/queen-of-hearts.png",
     id: 0
   },
 
   {
     rank: "Queen",
     suit: "Diamonds",
-    cardImage: "images/queen-of-diamonds.png",
+    cardImage: "memory_game/images/queen-of-diamonds.png",
     id: 1
   },
 
   {
     rank: "King",
     suit: "Hearts",
-    cardImage: "images/king-of-hearts.png",
+    cardImage: "memory_game/images/king-of-hearts.png",
     id: 2
   },
 
   {
     rank: "King",
     suit: "Diamonds",
-    cardImage: "images/king-of-diamonds.png",
+    cardImage: "memory_game/images/king-of-diamonds.png",
     id: 3
   }
 ];
@@ -110,9 +110,9 @@ var flipCard = (e) => {
       };
     }
 
-    matchOne.setAttribute("src", "images/back.png");
+    matchOne.setAttribute("src", "memory_game/images/back.png");
     matchOne.animate(animation, options);
-    matchTwo.setAttribute("src", "images/back.png");
+    matchTwo.setAttribute("src", "memory_game/images/back.png");
     matchTwo.animate(animation, options);
     matched = [];
   }
@@ -130,7 +130,7 @@ var flipCard = (e) => {
     cardTwo = document.getElementById(cardsInPlay[1].id)
   }
 
-  if (e.getAttribute("src") === "images/back.png") {
+  if (e.getAttribute("src") === "memory_game/images/back.png") {
     e.setAttribute("src", cards[card.key].cardImage);
   }
 
@@ -232,7 +232,7 @@ var gameText = (e, bool) => {
 
 var createCard = (i, diff = 0) => {
   cardElement = document.createElement("img");
-  cardElement.setAttribute("src", "images/back.png");
+  cardElement.setAttribute("src", "memory_game/images/back.png");
   cardElement.setAttribute("data-id", i - diff);
   cardElement.setAttribute("data-card", i);
   cardElement.setAttribute("id", "card-" + i);
