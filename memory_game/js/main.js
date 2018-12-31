@@ -1,6 +1,6 @@
 console.log("Up and running!");
 
-var flipHandler;
+var score;
 var cardElement;
 var cardsInPlay = [];
 var matched = [];
@@ -32,9 +32,12 @@ var cards = [{
     id: 3
   }
 ];
-var animation = [
-  { transform: "rotateY(0deg)" },
-  { transform: "rotateY(180deg)" }
+var animation = [{
+    transform: "rotateY(0deg)"
+  },
+  {
+    transform: "rotateY(180deg)"
+  }
 ];
 var options = {
   duration: 500,
@@ -88,21 +91,27 @@ var flipCard = (e) => {
 
 
   if (matched.length >= 2) {
-  // flips over prev cards that were not match
+    // flips over prev cards that were not match
     var matchOne = document.getElementById(matched[0].id)
     var matchTwo = document.getElementById(matched[1].id)
-    animation =[
-      { transform: "rotateY(0deg)" },
-      { transform: "rotateY(180deg)" }
+    animation = [{
+        transform: "rotateY(0deg)"
+      },
+      {
+        transform: "rotateY(180deg)"
+      }
     ];
     options = {
       duration: 250,
       iterations: 1,
     };
-    if (matched[0].id == matched[1].id){
-      animation =[
-        { transform: "rotateY(0deg)" },
-        { transform: "rotateY(360deg)" }
+    if (matched[0].id == matched[1].id) {
+      animation = [{
+          transform: "rotateY(0deg)"
+        },
+        {
+          transform: "rotateY(360deg)"
+        }
       ];
       options = {
         duration: 500,
@@ -114,7 +123,8 @@ var flipCard = (e) => {
     matchOne.animate(animation, options);
     matchTwo.setAttribute("src", "memory_game/images/back.png");
     matchTwo.animate(animation, options);
-    matched = [];
+
+    clearMatched();
   }
 
   cardsInPlay.push(card);
@@ -137,9 +147,12 @@ var flipCard = (e) => {
   if (checkForMatch() && cardsInPlay.length == 2) {
     // if it is a match, remove event listeners by replacing with a clone with no event listener
 
-    animation = [
-      { transform: "rotateY(0deg)" },
-      { transform: "rotateY(360deg)" }
+    animation = [{
+        transform: "rotateY(0deg)"
+      },
+      {
+        transform: "rotateY(360deg)"
+      }
     ];
     options = {
       duration: 500,
@@ -154,12 +167,13 @@ var flipCard = (e) => {
 
     matchTwo.animate(animation, options);
 
+    score++;
     gameText(card, true);
 
   } else if (!checkForMatch() && cardsInPlay.length == 2) {
     //  if its not a match, do nothing to cards and do text
 
-    matched = cardsInPlay
+    matched = cardsInPlay;
 
     gameText(card, false);
 
@@ -179,22 +193,32 @@ var flipCard = (e) => {
 
 var clearCards = () => {
   // clears the cardsInPlay array
-
   cardsInPlay = [];
 }
 
 var clearText = () => {
   // clears text about game
-  var parent = document.getElementById("game-text");
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
+  var clearByID = (id) => {
+    var parent = document.getElementById(id);
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
   }
+
+  clearByID("score");
+  clearByID("game-text");
+
 }
 
-var flipAll = () => {
+var clearMatched = () => {
+  // clears matched array
+  matched = [];
+}
+
+var reset = () => {
   // Flips all cards to img back and removes is-flipped class
   // Actually it resets the entire board by deleting everything and putting it back
-
+  clearMatched();
   clearText();
 
   var parent = document.getElementById("game-board");
@@ -210,24 +234,33 @@ var gameText = (e, bool) => {
 
   clearText();
   var gameTextElement = document.createElement("h2");
-  var t;
+  var gameText;
 
   if (bool) {
-    t = document.createTextNode("Match found: " + e.rank + " of " + e.suit);
+    gameText = document.createTextNode("Match found: " + e.rank + " of " + e.suit);
   } else if (!bool && cardsInPlay.length == 2) {
-    t = document.createTextNode(cardsInPlay[0].rank + " of " + cardsInPlay[0].suit + " does not match " + cardsInPlay[1].rank + " of " + cardsInPlay[1].suit);
-    if (cardsInPlay[0].id == cardsInPlay[1].id){
-      t = document.createTextNode(cardsInPlay[0].rank + " of " + cardsInPlay[0].suit + " cannot match itself");
+    gameText = document.createTextNode(cardsInPlay[0].rank + " of " + cardsInPlay[0].suit + " does not match " + cardsInPlay[1].rank + " of " + cardsInPlay[1].suit);
+    if (cardsInPlay[0].id == cardsInPlay[1].id) {
+      gameText = document.createTextNode(cardsInPlay[0].rank + " of " + cardsInPlay[0].suit + " cannot match itself");
     }
-
   }
 
   if (cardsInPlay.length == 1) {
-    t = document.createTextNode("Matching " + cardsInPlay[0].rank + " of  " + cardsInPlay[0].suit + " with...");
+    gameText = document.createTextNode("Matching " + cardsInPlay[0].rank + " of  " + cardsInPlay[0].suit + " with...");
   }
 
-  gameTextElement.appendChild(t);
+  gameTextElement.appendChild(gameText);
   document.getElementById("game-text").appendChild(gameTextElement);
+
+  var scoreTextElement = document.createElement("h2");
+  var scoreText = "Score: " + score;
+
+  if (score == 4) {
+    scoreText = "You won!";
+  }
+
+  scoreTextElement.append(scoreText);
+  document.getElementById("score").appendChild(scoreTextElement);
 }
 
 var createCard = (i, diff = 0) => {
@@ -242,9 +275,19 @@ var createCard = (i, diff = 0) => {
   document.getElementById("game-board").appendChild(cardElement);
 }
 
+var shuffle = (parent) => {
+  for (var i = parent.childNodes.length; i >= 0; i--) {
+    parent.appendChild(parent.childNodes[Math.random() * i | 0]);
+  }
+  return parent;
+}
+
 
 var createBoard = () => {
   // Creates the game board by adding cards as children to reset button id
+
+  // initialize score to 0
+  score = 0;
 
   //  makes cards 0-3
   for (var i = 0; i < cards.length; i++) {
@@ -256,8 +299,11 @@ var createBoard = () => {
     createCard(i, 4);
   }
 
-  document.getElementById("reset-button").addEventListener("click", flipAll);
+  // shuffles all cards around
+  shuffle(document.getElementById("game-board"));
+
   // adds reset button with
+  document.getElementById("reset-button").addEventListener("click", reset);
 };
 
 
