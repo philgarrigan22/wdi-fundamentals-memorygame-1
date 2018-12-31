@@ -223,7 +223,7 @@ var gameText = (e, bool) => {
   }
 
   if (cardsInPlay.length == 1) {
-    t = document.createTextNode("Matching...");
+    t = document.createTextNode("Matching " + cardsInPlay[0].rank + " of  " + cardsInPlay[0].suit + " with...");
   }
 
   gameTextElement.appendChild(t);
