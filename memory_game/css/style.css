@@ -174,13 +174,14 @@ html {
 }
 
 .card {
+  width: 175px;
+  height: 279px;
   transition: transform 1s;
   transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
-
 }
 
 .card.is-flipped {
-  transform: rotateY(180deg);
+  transform: rotateY(360deg);
 }
